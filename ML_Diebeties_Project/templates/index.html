@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Diabetes Prediction</title>
+<style>
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+        color: #333;
+        padding-top: 10px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2c9469;
+        padding: 15px 30px;
+        color: white;
+        flex-wrap: wrap;
+        position: sticky;   
+        top: 0;            
+        z-index: 1000;      
+    }
+
+    .navbar a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+    }
+
+    .navbar button {
+        margin-left: 5px;
+        padding: 5px 10px;
+        border: none;
+        background: white;
+        color: #2c9469;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .navbar.scrolled {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .navbar a:hover,
+    .navbar button:hover {
+        opacity: 0.8;
+    }
+
+    /* SECTIONS */
+    section {
+        padding: 40px 20px;
+        margin: 20px 0;
+        text-align: center;
+        scroll-margin-top: 80px;
+    }
+
+
+
+    /* BOX DESIGN */
+    .box, .transbox {
+        background: white;
+        padding: 25px;
+        margin: 20px auto;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .box {
+        transition: transform 0.3s ease;
+    }
+
+    .box:hover {
+        transform: translateY(-5px);
+    }
+
+    /* FORM */
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form input {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    form input:focus {
+        outline: none;
+        border-color: #2c9469;
+    }
+
+    /* BUTTON */
+    button {
+        padding: 10px;
+        background: #2c9469;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #247a58;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            text-align: center;
+            position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        }
+
+        .navbar div {
+            margin-top: 10px;
+        }
+
+        .navbar a {
+            display: block;
+            margin: 5px 0;
+        }
+    }
+    /* HERO SECTION */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 80px 10%;
+        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+    }
+
+    /* TEXT */
+    .hero-text {
+        flex: 1;
+    }
+
+    .hero-text h1 {
+        font-size: 50px;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+
+    /* Highlight word */
+    .highlight {
+        color: #2c9469;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+        margin: 20px 0;
+        color: #555;
+    }
+
+    /* BUTTON GROUP */
+    .hero-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    /* BUTTONS */
+    .hero-btn {
+        padding: 12px 22px;
+        font-size: 16px;
+        background: #2c9469;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .hero-btn:hover {
+        background: #247a58;
+    }
+
+    /* Secondary button */
+    .hero-btn.secondary {
+        background: transparent;
+        border: 2px solid #2c9469;
+        color: #2c9469;
+    }
+
+    .hero-btn.secondary:hover {
+        background: #2c9469;
+        color: white;
+    }
+
+    /* IMAGE */
+    .hero-img {
+        flex: 1;
+        text-align: center;
+    }
+
+    .hero-img img {
+        width: 100%;
+        max-width: 450px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* FLOAT ANIMATION */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    @media (max-width: 768px) {
+        .hero {
+            flex-direction: column;
+            text-align: center;
+            min-height: 70vh;
+        }
+
+        .hero-text h1 {
+            font-size: 32px;
+        }
+
+        .hero-buttons {
+            justify-content: center;
+        }
+
+        .hero-img img {
+            width: 70%;
+            margin-top: 20px;
+        }
+    }
+
+
+    /* CONTACT SECTION */
+    .contact-box {
+        max-width: 500px;
+    }
+
+    /* Description */
+    .contact-desc {
+        font-size: 14px;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    /* FORM */
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        margin: 8px 0;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .contact-form textarea {
+        resize: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #2c9469;
+        outline: none;
+    }
+
+    /* BUTTON */
+    .contact-form button {
+        margin-top: 10px;
+        background: #2c9469;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .contact-form button:hover {
+        background: #247a58;
+    }
+
+    /* CONTACT INFO */
+    .contact-info {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #444;
+    }
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-img img {
+            width: 60%;
+            margin-top: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 28px;
+        }
+    }
+    .login-box {
+        max-width: 400px;
+    }
+
+    #loginForm {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #loginForm input {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    #loginForm button {
+        margin-top: 10px;
+    }
+
+    .login-extra {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    /* ABOUT SECTION */
+    #about .box {
+        background: white;
+        border-left: 6px solid #2c9469;
+        padding: 25px;
+        border-radius: 12px;
+        max-width: 600px;
+        margin: 30px auto;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        text-align: left;
+    }
+
+    #about h2 {
+        color: #2c9469;
+        margin-bottom: 10px;
+    }
+
+    #about p {
+        line-height: 1.6;
+        font-size: 15px;
+    }
+    /* INSTRUCTION HEADING */
+    #instructions h2 {
+        text-align: center;
+        font-size: 26px;
+        color: #2c9469;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    /* Underline effect */
+    #instructions h2::after {
+        content: "";
+        width: 60px;
+        height: 3px;
+        background: #2c9469;
+        display: block;
+        margin: 8px auto 0;
+        border-radius: 5px;
+    }
+    /* STEP CONTAINER */
+    .inst-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* EACH STEP */
+    .step {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 12px 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+
+    /* HOVER EFFECT */
+    .step:hover {
+        transform: translateX(5px);
+    }
+
+    /* NUMBER CIRCLE */
+    .step span {
+        width: 30px;
+        height: 30px;
+        background: #2c9469;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    /* TEXT */
+    .step p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .result-box {
+        text-align: center;
+        margin: 20px auto;
+        padding: 15px;
+        width: 300px;
+        border-radius: 10px;
+        font-weight: bold;
+        background: #f1f8f6;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        animation: highlight 1s ease;
+    }
+
+    @keyframes highlight {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: 0.6s;
+    }
+
+    section.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* FOOTER */
+    .footer {
+        background: #2c9469;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    .footer-content h3 {
+        margin-bottom: 10px;
+    }
+
+    .footer-content p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    /* LINKS */
+    .footer-links {
+        margin: 15px 0;
+    }
+
+    .footer-links a {
+        margin: 0 10px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+
+    /* COPYRIGHT */
+    .footer-copy {
+        font-size: 12px;
+        margin-top: 10px;
+        opacity: 0.8;
+    }
+</style>
+</head>
+<body>
+    <div class="navbar">
+    <h2 id="logo">Diabetes Predictor</h2>
+    <div>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#instructions">Instructions</a>
+        <a href="#login">Login</a>
+        <a href="#predict">Predict</a>
+        <a href="#contact">Contact</a>
+        
+
+    </div>
+</div>
+
+<section id="home" class="hero">
+    <div class="hero-text">
+        <h1 id="homeTitle">
+            Smart <span class="highlight">Diabetes Prediction</span> System
+        </h1>
+
+        <p id="homeDesc">
+            Analyze your health using AI-powered machine learning and get instant risk prediction.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#predict">
+                <button class="hero-btn">Check Now</button>
+            </a>
+            <a href="#about">
+                <button class="hero-btn secondary">Learn More</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-img">
+        <img src="{{ url_for('static', filename='Diabetes.png') }}" alt="health image">
+    </div>
+</section>
+
+
+<section id="about">
+    <div class="box">
+        <h2 id="aboutTitle">About Project</h2>
+        <p id="aboutText">This Diabetes Prediction System is a Machine Learning-based web application designed to estimate the likelihood of diabetes in an individual. 
+It uses medical parameters such as glucose level, BMI, blood pressure, age, and insulin level to make predictions.
+The model is trained on real-world healthcare data and applies classification algorithms to analyze patterns and risk factors. 
+This tool aims to assist users in early detection and encourage timely medical consultation.
+⚠ Note: This is not a medical diagnosis tool. Always consult a healthcare professional for accurate advice.
+</p>
+    </div>
+</section>
+
+<section id="instructions">
+	<h2 id="instTitle">Get Started in 5 Easy Steps</h2>
+    <div class="inst-steps">
+    <div class="step">
+        <span>1</span>
+        <p id="i1">Enter all the required medical details accurately</p>
+    </div>
+
+    <div class="step">
+        <span>2</span>
+        <p id="i2">Ensure values like Glucose, BMI are realistic</p>
+    </div>
+
+    <div class="step">
+        <span>3</span>
+        <p id="i3">Click on "Predict" button</p>
+    </div>
+
+    <div class="step">
+        <span>4</span>
+        <p>Wait a few seconds for processing</p>
+    </div>
+
+    <div class="step">
+        <span>5</span>
+        <p>View the result on screen</p>
+    </div>
+</div>
+</section>
+
+<section id="login">
+    <div class="box login-box">
+        <h2 id="loginTitle">Login</h2>
+
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit" id="loginBtn">Login</button>
+        </form>
+
+        <p class="login-extra">
+            Demo login: <b>user / 1234</b>
+        </p>
+    </div>
+</section>
+
+<section id="predict">
+    <div class="transbox">
+    <h2 style="text-align:center; color: rgb(44, 148, 105);">Diabetes Prediction Form</h2>
+    <form action="/predict" method="POST">
+        <input type="number" name="Pregnancies" placeholder="Pregnancies" required>
+        <input type="number" name="Glucose" placeholder="Glucose" required>
+        <input type="number" name="BloodPressure" placeholder="Blood Pressure" required>
+        <input type="number" name="SkinThickness" placeholder="Skin Thickness" required>
+        <input type="number" name="Insulin" placeholder="Insulin" required>
+        <input type="number" name="BMI" placeholder="BMI" required>
+        <input type="number" name="DiabetesPedigreeFunction" placeholder="Diabetes Pedigree Function" step="any" required>
+        <input type="number" name="Age" placeholder="Age" required>
+        <button type="submit">Predict</button>
+    </form>
+    </div>
+</section>
+<div id="resultSection" class="result-box">
+    <h3>{{ result }}</h3>
+</div>
+<section id="contact">
+    <div class="box contact-box">
+        <h2 id="contactTitle">Contact Us</h2>
+
+        <p class="contact-desc">
+            Have questions or feedback? Feel free to reach out to us.
+        </p>
+
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div class="contact-info">
+            <p>📧 Email: support@example.com</p>
+            <p>📞 Phone: +91 98765 43210</p>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-content">
+        <h3>Diabetes Predictor</h3>
+        <p>A web based system to check your diabetes risk.</p>
+
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#predict">Predict</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <p class="footer-copy">
+            © 2026 Diabetes Predictor | All Rights Reserved
+        </p>
+    </div>
+</footer>
+     <script>
+
+// Smooth scrolling
+window.addEventListener("scroll", () => {
+    const nav = document.querySelector(".navbar");
+    if (window.scrollY > 10) {
+        nav.classList.add("scrolled");
+    } else {
+        nav.classList.remove("scrolled");
+    }
+});
+
+const sections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+
+
+// Navbar scroll effect
+window.addEventListener("scroll", () => {
+    const nav = document.querySelector(".navbar");
+    nav.style.boxShadow = window.scrollY > 50 
+        ? "0 2px 10px rgba(0,0,0,0.2)" 
+        : "none";
+});
+
+document.querySelector(".contact-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    alert("Message sent successfully!");
+});
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
+
+    if(user === "user" && pass === "1234"){
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", user);
+
+        alert("Login Successful ✅");
+
+        document.getElementById("predict").style.display = "block";
+
+        // Go to predict section
+        document.getElementById("predict").scrollIntoView({ behavior: "smooth" });
+
+    } else {
+        alert("Invalid credentials (Try user / 1234)");
+    }
+});
+
+// Block navigation to Predict if not logged in
+document.querySelectorAll('a[href="#predict"]').forEach(link => {
+    link.addEventListener("click", function(e) {
+        if(localStorage.getItem("loggedIn") !== "true"){
+            e.preventDefault();
+            alert("⚠ Please login first");
+
+            document.getElementById("login").scrollIntoView({ behavior: "smooth" });
+        }
+    });
+});
+
+document.querySelector("#predict form").addEventListener("submit", function(e) {
+    if(localStorage.getItem("loggedIn") !== "true"){
+        e.preventDefault();
+        alert("⚠ Login required before prediction");
+
+        document.getElementById("login").scrollIntoView({ behavior: "smooth" });
+    }
+});
+
+window.addEventListener("load", () => {
+
+    // 1. Login check + welcome UI
+    if(localStorage.getItem("loggedIn") === "true"){
+        let user = localStorage.getItem("username");
+
+        document.getElementById("login").innerHTML = `
+            <div class="box">
+                <h2>Welcome, ${user} 👋</h2>
+                <button onclick="logout()">Logout</button>
+            </div>
+        `;
+    }
+
+    // 3. Scroll to result if exists
+    const result = "{{ result }}";
+    if(result && result.trim() !== ""){
+        const el = document.getElementById("resultSection");
+        if(el){
+            el.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+});
+function logout(){
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("username");
+    location.reload();
+}
+</script>
+
+    </body>
+</html>
